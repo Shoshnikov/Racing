@@ -1,0 +1,27 @@
+
+boxAtlas.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+barels
+  rotate: false
+  xy: 171, 139
+  size: 172, 98
+  orig: 172, 98
+  offset: 0, 0
+  index: -1
+boxWithWeel
+  rotate: false
+  xy: 2, 98
+  size: 167, 139
+  orig: 167, 139
+  offset: 0, 0
+  index: -1
+boxes
+  rotate: false
+  xy: 2, 2
+  size: 163, 94
+  orig: 163, 94
+  offset: 0, 0
+  index: -1

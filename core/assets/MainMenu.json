@@ -1,0 +1,26 @@
+{
+	com.badlogic.gdx.graphics.Color:
+	{
+		white: { r: 1, g: 1, b: 1, a: 1 },
+      "black": {
+        "r": 0,
+        "g": 0,
+        "b": 0
+      }
+	},
+
+	com.badlogic.gdx.graphics.g2d.BitmapFont:
+	{
+		buttonFont: {file: buttonFont.fnt}
+	},
+
+	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle:
+	{
+		default: { 
+			down: Down, 
+			up: Up,
+			font: buttonFont,
+			fontColor: black
+			}
+	}
+}
