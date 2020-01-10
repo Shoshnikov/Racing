@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ public class mainGameScreen implements Screen
                 speed = 100;
                 break;
         }
-        road0 = new Texture(new FileHandle("core\\assets\\road.png"));
+        road0 = new Texture(Gdx.files.internal("road.png"));
         road1 = road0;
         carX = game.getScreenWidth()/2-car.getWidth()/2;
         car.setPosition(carX,0f);
@@ -102,8 +104,8 @@ public class mainGameScreen implements Screen
         carRect.setPosition(carX,0f);
         car.setPosition(carX,0f);
         batch.begin();
-        batch.draw(road0,0,roadY);
-        batch.draw(road1,0,roadY+road0.getHeight());
+        batch.draw(road0,0,roadY, game.getScreenWidth(),game.getScreenHeight());
+        batch.draw(road1,0,roadY+road0.getHeight(), game.getScreenWidth(),game.getScreenHeight());
         for(Barrier barrier: barriers)
         {
             barrier.move();
