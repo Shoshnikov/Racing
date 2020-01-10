@@ -12,7 +12,7 @@ public class Barrier
     private Sprite barrierSprite;
     private Rectangle barrierRectangle;
     private float x,y;
-    private float speed = 150f * Gdx.graphics.getDeltaTime();
+    public static float speed = 50f * Gdx.graphics.getDeltaTime();
 
     private void randomSprite()
     {
@@ -56,4 +56,5 @@ public class Barrier
     {
         return barrierRectangle;
     }
+    public float getSpeed() {return speed;}
 }

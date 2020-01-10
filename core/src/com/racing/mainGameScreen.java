@@ -3,7 +3,6 @@ package com.racing;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -33,6 +30,7 @@ public class mainGameScreen implements Screen
     private ArrayList<Integer> disposeBarriers = new ArrayList<>();
     private long lastSpawnTime = 0;
     private long spawnDelay = 2000;
+
 
     public mainGameScreen(Game game)
     {
@@ -103,6 +101,10 @@ public class mainGameScreen implements Screen
             barriers.remove(i);
         carRect.setPosition(carX,0f);
         car.setPosition(carX,0f);
+        if(roadY+road1.getHeight() < 0)
+            roadY = 0;
+        else
+            roadY -= Barrier.speed;
         batch.begin();
         batch.draw(road0,0,roadY, game.getScreenWidth(),game.getScreenHeight());
         batch.draw(road1,0,roadY+road0.getHeight(), game.getScreenWidth(),game.getScreenHeight());
@@ -113,10 +115,6 @@ public class mainGameScreen implements Screen
         }
         car.draw(batch);
         batch.end();
-        if(roadY+road1.getHeight() < 0)
-            roadY = 0;
-        else
-            roadY -= 150f*Gdx.graphics.getDeltaTime();
     }
 
     @Override
