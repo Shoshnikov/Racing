@@ -25,18 +25,22 @@ public class MainMenu implements Screen
     private Game game;
     private Texture background;
     private SpriteBatch batch;
+    private Image carForChoise;
+    private TextureAtlas carAtlas;
 
     public MainMenu(Game game)
     {
         System.out.println("Menu created");
         this.game = game;
         UIAtlas = new TextureAtlas(new FileHandle("core\\assets\\UIAtlas.atlas"));
+        carAtlas = new TextureAtlas(Gdx.files.internal("carAtlas.atlas"));
         mainMenuSkin = new Skin(new FileHandle("core\\assets\\MainMenu.json"),UIAtlas);
         playTB = new TextButton("play",mainMenuSkin,"default");
         exitTB = new TextButton("exit", mainMenuSkin,"default");
         stage = new Stage();
         background = new Texture(new FileHandle("core\\assets\\Desert2.png"));
         batch = new SpriteBatch();
+        carForChoise = new Image(carAtlas.findRegion("redCar"));
     }
     @Override
     public void show()
@@ -58,9 +62,12 @@ public class MainMenu implements Screen
                 return true;
             }
         });
+        carForChoise.scaleBy(0.001f,0.001f);
+        carForChoise.setPosition(game.getScreenWidth()/6f,game.getScreenHeight()/1.8f);
         System.out.println("Menu show");
         stage.addActor(playTB);
         stage.addActor(exitTB);
+        stage.addActor(carForChoise);
         Gdx.input.setInputProcessor(stage);
     }
 

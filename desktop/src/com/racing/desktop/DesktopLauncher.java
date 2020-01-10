@@ -15,7 +15,6 @@ public class DesktopLauncher
         config.height = 800;*/
         config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
         config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
-        System.out.println(config.width + " " + config.height);
         config.fullscreen = true;
 		new LwjglApplication(new Game(config.width,config.height), config);
 	}

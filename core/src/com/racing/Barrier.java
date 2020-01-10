@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Barrier
 {
-    private TextureAtlas boxAtlas = new TextureAtlas("boxAtlas.atlas");
+    private static TextureAtlas boxAtlas = new TextureAtlas("boxAtlas.atlas");
     private Sprite barrierSprite;
     private Rectangle barrierRectangle;
     private float x,y;
-    public static float speed = 50f * Gdx.graphics.getDeltaTime();
+    public static float speed = 45f * Gdx.graphics.getDeltaTime();
 
     private void randomSprite()
     {
@@ -57,4 +57,5 @@ public class Barrier
         return barrierRectangle;
     }
     public float getSpeed() {return speed;}
+
 }
