@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class mainGameScreen implements Screen
@@ -28,11 +27,10 @@ public class mainGameScreen implements Screen
     private float roadY;
     private int speed;
     private Rectangle carRect;
-    //private Barrier barrier;
     private ArrayList<Barrier> barriers = new ArrayList<>();
     private ArrayList<Integer> disposeBarriers = new ArrayList<>();
     private long lastSpawnTime = 0;
-    private long spawnDelay = 4000;
+    private long spawnDelay = 2000;
 
     public mainGameScreen(Game game)
     {
@@ -65,7 +63,6 @@ public class mainGameScreen implements Screen
         car.setPosition(carX,0f);
         batch = new SpriteBatch();
         carRect = new Rectangle(carX,0f,car.getWidth(),car.getHeight());
-        //barrier = new Barrier(MathUtils.random(0,game.getScreenWidth()-100),game.getScreenHeight());
         roadY = 0;
     }
 
@@ -79,7 +76,7 @@ public class mainGameScreen implements Screen
     {
         Gdx.gl.glClearColor(0f,0f,0f,1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        System.out.println("mainGameScreen render");
+        System.out.println("mainGameScreen render Delta: " + delta);
 
         if(Gdx.input.isKeyPressed(Input.Keys.D) && carX < game.getScreenWidth() - car.getWidth()) {
             carX += speed * Gdx.graphics.getDeltaTime();
@@ -102,7 +99,6 @@ public class mainGameScreen implements Screen
 
         for(Integer i: disposeBarriers)
             barriers.remove(i);
-        //barrier.move();
         carRect.setPosition(carX,0f);
         car.setPosition(carX,0f);
         batch.begin();
