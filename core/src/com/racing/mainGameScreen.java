@@ -28,7 +28,7 @@ public class mainGameScreen implements Screen
         this.game = game;
         road0 = new Texture(Gdx.files.internal("road.png"));
         road1 = road0;
-        car = new Car(game.getScreenWidth()/2);
+        car = new Car(game.getScreenWidth()/2f);
         batch = new SpriteBatch();
         roadY = 0;
     }

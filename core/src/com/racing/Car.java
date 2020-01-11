@@ -39,6 +39,29 @@ public class Car
         }
     }
 
+    public void choisenCar(int carNumber)
+    {
+        switch (carNumber)
+        {
+            case 0:
+                carSprite = carAtlas.createSprite("redCar");
+                speed = 250;
+                break;
+            case 1:
+                carSprite = carAtlas.createSprite("greenCar");
+                speed = 200;
+                break;
+            case 2:
+                carSprite = carAtlas.createSprite("blueCar");
+                speed = 200;
+                break;
+            case 3:
+                carSprite = carAtlas.createSprite("violetCar");
+                speed = 200;
+                break;
+        }
+    }
+
     public Car(float x)
     {
         this.x = x;

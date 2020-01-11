@@ -8,12 +8,10 @@
         "b": 0
       }
 	},
-
 	com.badlogic.gdx.graphics.g2d.BitmapFont:
 	{
 		buttonFont: {file: buttonFont.fnt}
 	},
-
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle:
 	{
 		default: { 
@@ -22,5 +20,18 @@
 			font: buttonFont,
 			fontColor: black
 			}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle":
+	{
+		"arrowRigth":
+		{
+			"down": rightButtonDown,
+			"up": rightButton
+		},
+		"arrowLeft":
+		{
+			"down": leftButtonDown,
+			"up": leftButton
+		}
 	}
 }

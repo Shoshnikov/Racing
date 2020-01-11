@@ -27,6 +27,10 @@ public class MainMenu implements Screen
     private SpriteBatch batch;
     private Image carForChoise;
     private TextureAtlas carAtlas;
+    private Button leftArrow;
+    private Button rightArrow;
+    private int choise;
+    private boolean leftAnimationOn = false, rightAnimationOn = false;
 
     public MainMenu(Game game)
     {
@@ -41,11 +45,61 @@ public class MainMenu implements Screen
         background = new Texture(new FileHandle("core\\assets\\Desert2.png"));
         batch = new SpriteBatch();
         carForChoise = new Image(carAtlas.findRegion("redCar"));
+        leftArrow = new Button(mainMenuSkin,"arrowLeft");
+        rightArrow = new Button(mainMenuSkin,"arrowRigth");
+        choise = 0;
     }
+
+    private void switchTexture()
+    {
+        switch(choise)
+        {
+            case 0:
+                carForChoise = new Image(carAtlas.findRegion("redCar"));
+                break;
+            case 1:
+                carForChoise = new Image(carAtlas.findRegion("greenCar"));
+                break;
+            case 2:
+                carForChoise = new Image(carAtlas.findRegion("blueCar"));
+                break;
+            case 3:
+                carForChoise = new Image(carAtlas.findRegion("violetCar"));
+                break;
+        }
+    }
+
+    private void rightAnimation()
+    {
+        if(carForChoise.getX() < rightArrow.getX())
+            carForChoise.setPosition(carForChoise.getX()+10f,carForChoise.getY());
+        else
+            {
+                carForChoise.remove();
+                switchTexture();
+                carForChoise.setPosition(game.getScreenWidth()/6f,game.getScreenHeight()/1.8f);
+                rightAnimationOn = false;
+            }
+    }
+
+    private void leftAnimation()
+    {
+        if(carForChoise.getX() > leftArrow.getX())
+            carForChoise.setPosition(carForChoise.getX()-10f,carForChoise.getY());
+        else
+            {
+                carForChoise.remove();
+                switchTexture();
+                carForChoise.setPosition(game.getScreenWidth()/6f,game.getScreenHeight()/1.8f);
+                leftAnimationOn = false;
+            }
+    }
+
     @Override
     public void show()
     {
-        playTB.setPosition(game.getScreenWidth() / 2 - playTB.getWidth()/2,game.getScreenHeight()/1.5f);
+
+        playTB.setPosition(game.getScreenWidth() / 2f - playTB.getWidth()/2,game.getScreenHeight()/1.5f);
         playTB.addListener(new ClickListener()
         {
             @Override
@@ -54,7 +108,8 @@ public class MainMenu implements Screen
                 return true;
             }
         });
-        exitTB.setPosition(game.getScreenWidth()/2-exitTB.getWidth()/2,game.getScreenHeight()/4);
+
+        exitTB.setPosition(game.getScreenWidth()/2f-exitTB.getWidth()/2,game.getScreenHeight()/4f);
         exitTB.addListener(new ClickListener()
         {
             @Override
@@ -62,27 +117,73 @@ public class MainMenu implements Screen
                 return true;
             }
         });
+
         carForChoise.scaleBy(0.001f,0.001f);
         carForChoise.setPosition(game.getScreenWidth()/6f,game.getScreenHeight()/1.8f);
+
+        rightArrow.setPosition(carForChoise.getX()+carForChoise.getPrefWidth(),carForChoise.getY() + 100f);
+        rightArrow.addListener(new ClickListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        leftArrow.setPosition(carForChoise.getX() - leftArrow.getPrefWidth(),carForChoise.getY() + 100f);
+        leftArrow.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
         System.out.println("Menu show");
         stage.addActor(playTB);
         stage.addActor(exitTB);
         stage.addActor(carForChoise);
+        stage.addActor(rightArrow);
+        stage.addActor(leftArrow);
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta)
     {
-        System.out.println("Menu render delta: " + delta);
+        //System.out.println("Menu render delta: " + delta);
+
         batch.begin();
         batch.draw(background,0,0,game.getScreenWidth(),game.getScreenHeight());
+        carForChoise.draw(batch,1f);
         batch.end();
+
+        stage.act(delta);
         stage.draw();
+
         if(playTB.getClickListener().isPressed())
             game.setScreen(new mainGameScreen(game));
         if(exitTB.getClickListener().isPressed())
             Gdx.app.exit();
+        if(rightArrow.getClickListener().isPressed())
+        {
+            if (choise > 0 && !rightAnimationOn)
+            {
+                choise--;
+                System.out.println("rightAnimationOn started\nchoise " + choise);
+                rightAnimationOn = true;
+            }
+        }
+        if(leftArrow.getClickListener().isPressed())
+            if(choise < 3 && !leftAnimationOn)
+            {
+                choise++;
+                System.out.println("leftAnimationOn started\nchoise " + choise);
+                leftAnimationOn = true;
+            }
+        if(leftAnimationOn)
+            leftAnimation();
+        if(rightAnimationOn)
+            rightAnimation();
     }
 
     @Override

@@ -1,20 +1,48 @@
 
 UIAtlas.png
-size: 512,128
+size: 256,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 Down
   rotate: false
-  xy: 2, 2
+  xy: 2, 390
   size: 223, 80
   orig: 223, 80
   offset: 0, 0
   index: -1
 Up
   rotate: false
-  xy: 227, 2
+  xy: 2, 308
   size: 223, 80
   orig: 223, 80
+  offset: 0, 0
+  index: -1
+leftButton
+  rotate: false
+  xy: 2, 231
+  size: 145, 75
+  orig: 145, 75
+  offset: 0, 0
+  index: -1
+leftButtonDown
+  rotate: false
+  xy: 2, 154
+  size: 145, 75
+  orig: 145, 75
+  offset: 0, 0
+  index: -1
+rightButton
+  rotate: false
+  xy: 2, 78
+  size: 146, 74
+  orig: 146, 74
+  offset: 0, 0
+  index: -1
+rightButtonDown
+  rotate: false
+  xy: 2, 2
+  size: 146, 74
+  orig: 146, 74
   offset: 0, 0
   index: -1
