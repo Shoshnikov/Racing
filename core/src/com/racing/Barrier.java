@@ -56,6 +56,5 @@ public class Barrier
     {
         return barrierRectangle;
     }
-    public float getSpeed() {return speed;}
 
 }

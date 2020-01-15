@@ -39,8 +39,14 @@ public class Car
         }
     }
 
-    public void choisenCar(int carNumber)
+    private void choisenCar(int carNumber)
     {
+        //TODO оптимизировать
+        /*
+        * Вообще тут можно сделать прикольную шнягу, а именно создать собственный класс наслудующий от TextureAtlas
+        * и переопределить в нем метод createSprite() так, чтобы можно были искать регион только по индексу. По крайней
+        * мере стоит попробовать так сделать
+        * */
         switch (carNumber)
         {
             case 0:
@@ -67,6 +73,16 @@ public class Car
         this.x = x;
         carAtlas = new TextureAtlas(Gdx.files.internal("carAtlas.atlas"));
         randomSprite();
+        carRectangle = new Rectangle(x+ 30,30,carSprite.getWidth()-30,carSprite.getHeight()-30);
+        this.x -= carSprite.getWidth()/2;
+        setPosition();
+    }
+
+    public Car(float x, int carNumber)
+    {
+        this.x = x;
+        carAtlas = new TextureAtlas(Gdx.files.internal("carAtlas.atlas"));
+        choisenCar(carNumber);
         carRectangle = new Rectangle(x+ 30,30,carSprite.getWidth()-30,carSprite.getHeight()-30);
         this.x -= carSprite.getWidth()/2;
         setPosition();

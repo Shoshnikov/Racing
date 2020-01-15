@@ -33,5 +33,12 @@
 			"down": leftButtonDown,
 			"up": leftButton
 		}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle":
+	{
+		default: {
+			"font": buttonFont,
+			"fontColor": white
+		}
 	}
 }

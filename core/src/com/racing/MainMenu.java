@@ -15,6 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 public class MainMenu implements Screen
 {
     private TextButton playTB;
@@ -31,6 +36,11 @@ public class MainMenu implements Screen
     private Button rightArrow;
     private int choise;
     private boolean leftAnimationOn = false, rightAnimationOn = false;
+    private Label record;
+    private FileInputStream fileInputStream;
+    private ObjectInputStream objectInputStream;
+    private boolean firstStart = true;
+
 
     public MainMenu(Game game)
     {
@@ -38,7 +48,7 @@ public class MainMenu implements Screen
         this.game = game;
         UIAtlas = new TextureAtlas(new FileHandle("core\\assets\\UIAtlas.atlas"));
         carAtlas = new TextureAtlas(Gdx.files.internal("carAtlas.atlas"));
-        mainMenuSkin = new Skin(new FileHandle("core\\assets\\MainMenu.json"),UIAtlas);
+        mainMenuSkin = new Skin(new FileHandle("core\\assets\\UISkin.json"),UIAtlas);
         playTB = new TextButton("play",mainMenuSkin,"default");
         exitTB = new TextButton("exit", mainMenuSkin,"default");
         stage = new Stage();
@@ -48,6 +58,27 @@ public class MainMenu implements Screen
         leftArrow = new Button(mainMenuSkin,"arrowLeft");
         rightArrow = new Button(mainMenuSkin,"arrowRigth");
         choise = 0;
+        if(Gdx.files.internal("core\\assets\\save.sav").exists() && firstStart)
+        {
+            try
+            {
+                fileInputStream = new FileInputStream(Gdx.files.internal("core\\assets\\save.sav").toString());
+                objectInputStream = new ObjectInputStream(fileInputStream);
+                game.save = (Save)objectInputStream.readObject();
+                System.out.println("Record readed: " + game.save.getRecord());
+                objectInputStream.close();
+            }
+            catch(Exception e)
+            {
+                System.out.println("ОШИБКА ПРИ ЗАГРУЗКЕ ФАЙЛА");
+                System.out.println(e.getMessage());
+            }
+            record = new Label("Record: " + game.save.getRecord(),mainMenuSkin,"default");
+        }else
+            record = new Label("Record: ",mainMenuSkin,"default");
+
+        record.setPosition(game.getScreenWidth()/1.3f,game.getScreenHeight()/1.2f);
+        firstStart = false;
     }
 
     private void switchTexture()
@@ -99,6 +130,9 @@ public class MainMenu implements Screen
     public void show()
     {
 
+        if(!firstStart)
+            record.setText("Record: " + game.save.getRecord());
+
         playTB.setPosition(game.getScreenWidth() / 2f - playTB.getWidth()/2,game.getScreenHeight()/1.5f);
         playTB.addListener(new ClickListener()
         {
@@ -144,6 +178,7 @@ public class MainMenu implements Screen
         stage.addActor(carForChoise);
         stage.addActor(rightArrow);
         stage.addActor(leftArrow);
+        stage.addActor(record);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -160,8 +195,10 @@ public class MainMenu implements Screen
         stage.act(delta);
         stage.draw();
 
-        if(playTB.getClickListener().isPressed())
-            game.setScreen(new mainGameScreen(game));
+        if(playTB.getClickListener().isPressed()) {
+            game.setScreen(new mainGameScreen(game, choise, this));
+            playTB.getClickListener().cancel();
+        }
         if(exitTB.getClickListener().isPressed())
             Gdx.app.exit();
         if(rightArrow.getClickListener().isPressed())
@@ -204,6 +241,7 @@ public class MainMenu implements Screen
     @Override
     public void hide() {
         System.out.println("Menu hide");
+        dispose();
     }
 
     @Override
