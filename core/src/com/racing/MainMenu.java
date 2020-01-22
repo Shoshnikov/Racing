@@ -187,6 +187,9 @@ public class MainMenu implements Screen
     {
         //System.out.println("Menu render delta: " + delta);
 
+        Gdx.gl.glClearColor(0f,0f,0f,1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
         batch.draw(background,0,0,game.getScreenWidth(),game.getScreenHeight());
         carForChoise.draw(batch,1f);
@@ -247,5 +250,10 @@ public class MainMenu implements Screen
     @Override
     public void dispose() {
         System.out.println("Menu dispose");
+    }
+
+    public int getChoise()
+    {
+        return choise;
     }
 }

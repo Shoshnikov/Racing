@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.TimeUtils;
-import jdk.tools.jaotc.Main;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -39,6 +38,7 @@ public class mainGameScreen implements Screen
     private Stage stage;
     private long prevTime = 0l;
     private MainMenu mainMenu;
+    private Label hpLabel;
 
     public mainGameScreen(Game game, int chosenCarIndex, MainMenu mainMenu)
     {
@@ -53,7 +53,9 @@ public class mainGameScreen implements Screen
         toMainMenu = new TextButton("Main Menu", mainGameScreenSkin,"default");
         toMainMenu.setPosition(game.getScreenWidth()/1.3f,game.getScreenHeight()/1.2f);
         recordLabel = new Label("",mainGameScreenSkin,"default");
-        recordLabel.setPosition(game.getScreenWidth()/2-recordLabel.getWidth() - 12,game.getScreenHeight()-50);
+        recordLabel.setPosition(game.getScreenWidth()/2f-recordLabel.getWidth() - 12,game.getScreenHeight()-50);
+        hpLabel = new Label("HP: " + car.getHp(), mainGameScreenSkin,"default");
+        hpLabel.setPosition(game.getScreenWidth()/8f-recordLabel.getWidth() - 12,game.getScreenHeight()-50);
         stage = new Stage();
         this.mainMenu = mainMenu;
     }
@@ -64,7 +66,13 @@ public class mainGameScreen implements Screen
         while(iterator.hasNext())
         {
             Barrier barrier = iterator.next();
-            if(barrier.getBarrierRectangle().overlaps(car.getCarRectangle()) || barrier.getBarrierSprite().getY() + barrier.getBarrierSprite().getHeight() < 0)
+            if(barrier.getBarrierRectangle().overlaps(car.getCarRectangle()))
+            {
+                iterator.remove();
+                car.damage(barrier.getDamage());
+                hpLabel.setText("HP: "+ car.getHp());
+            }
+            else if(barrier.getBarrierSprite().getY() + barrier.getBarrierSprite().getHeight() < 0)
                 iterator.remove();
         }
     }
@@ -72,6 +80,7 @@ public class mainGameScreen implements Screen
     @Override
     public void show()
     {
+        stage.addActor(hpLabel);
         stage.addActor(recordLabel);
         stage.addActor(toMainMenu);
         Gdx.input.setInputProcessor(stage);
@@ -89,6 +98,7 @@ public class mainGameScreen implements Screen
            car.moveRight();
             System.out.println("D pressed");
         }
+
         if(Gdx.input.isKeyPressed(Input.Keys.A) && car.getX() > 0) {
             car.moveLeft();
             System.out.println("A pressed");
@@ -117,8 +127,12 @@ public class mainGameScreen implements Screen
 
         if(toMainMenu.getClickListener().isPressed())
         {
+            //game.setScreen(new MainMenu(game));
             game.setScreen(mainMenu);
         }
+
+        if(car.getHp() <= 0)
+            game.setScreen(new GameOver(game,mainMenu));
 
         batch.begin();
         batch.draw(road0,0,roadY, game.getScreenWidth(),game.getScreenHeight());

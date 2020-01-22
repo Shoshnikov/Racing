@@ -13,6 +13,7 @@ public class Car
     private float speed;
     private float x;
     private Rectangle carRectangle;
+    private int hp;
 
     private void randomSprite()
     {
@@ -23,18 +24,22 @@ public class Car
             case 0:
                 carSprite = carAtlas.createSprite("redCar");
                 speed = 250;
+                hp = 50;
                 break;
             case 1:
                 carSprite = carAtlas.createSprite("greenCar");
                 speed = 200;
+                hp = 100;
                 break;
             case 2:
                 carSprite = carAtlas.createSprite("blueCar");
                 speed = 200;
+                hp = 100;
                 break;
             case 3:
                 carSprite = carAtlas.createSprite("violetCar");
                 speed = 200;
+                hp = 150;
                 break;
         }
     }
@@ -52,18 +57,22 @@ public class Car
             case 0:
                 carSprite = carAtlas.createSprite("redCar");
                 speed = 250;
+                hp = 50;
                 break;
             case 1:
                 carSprite = carAtlas.createSprite("greenCar");
                 speed = 200;
+                hp = 100;
                 break;
             case 2:
                 carSprite = carAtlas.createSprite("blueCar");
                 speed = 200;
+                hp = 100;
                 break;
             case 3:
                 carSprite = carAtlas.createSprite("violetCar");
                 speed = 200;
+                hp = 150;
                 break;
         }
     }
@@ -119,5 +128,15 @@ public class Car
     public Sprite getCarSprite()
     {
         return carSprite;
+    }
+
+    public int getHp()
+    {
+        return hp;
+    }
+
+    public void damage(int damage)
+    {
+        hp-=damage;
     }
 }
