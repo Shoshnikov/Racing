@@ -46,13 +46,13 @@ public class MainMenu implements Screen
     {
         System.out.println("Menu created");
         this.game = game;
-        UIAtlas = new TextureAtlas(new FileHandle("core\\assets\\UIAtlas.atlas"));
         carAtlas = new TextureAtlas(Gdx.files.internal("carAtlas.atlas"));
-        mainMenuSkin = new Skin(new FileHandle("core\\assets\\UISkin.json"),UIAtlas);
+        UIAtlas = new TextureAtlas(Gdx.files.internal("UIAtlas.atlas"));
+        mainMenuSkin = new Skin(Gdx.files.internal("UISkin.json"),UIAtlas);
         playTB = new TextButton("play",mainMenuSkin,"default");
         exitTB = new TextButton("exit", mainMenuSkin,"default");
         stage = new Stage();
-        background = new Texture(new FileHandle("core\\assets\\Desert2.png"));
+        background = new Texture(Gdx.files.internal("Desert2.png"));
         batch = new SpriteBatch();
         carForChoise = new Image(carAtlas.findRegion("redCar"));
         leftArrow = new Button(mainMenuSkin,"arrowLeft");

@@ -177,7 +177,7 @@ public class mainGameScreen implements Screen
         try
         {
             game.save.setRecord(record);
-            FileOutputStream fileOutputStream = new FileOutputStream(Gdx.files.internal("core\\assets\\save.sav").toString());
+            FileOutputStream fileOutputStream = new FileOutputStream(Gdx.files.internal("save.sav").toString());
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(game.save);
             objectOutputStream.close();
