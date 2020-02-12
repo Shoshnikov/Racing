@@ -40,10 +40,13 @@ public class mainGameScreen implements Screen
     private long prevTime = 0l;
     private MainMenu mainMenu;
     private Label hpLabel;
+    private int destenation;
+    private Map map;
 
-    public mainGameScreen(Game game, int chosenCarIndex, MainMenu mainMenu)
+    public mainGameScreen(Game game, int chosenCarIndex, MainMenu mainMenu, int destenation, Map map)
     {
         this.game = game;
+        this.destenation = destenation;
         road0 = new Texture(Gdx.files.internal("road.png"));
         road1 = road0;
         car = new Car(game.getScreenWidth()/2f, chosenCarIndex);
@@ -117,6 +120,12 @@ public class mainGameScreen implements Screen
             recordLabel.setText(""+record);
             //recordLabel.setPosition(game.getScreenWidth()/2-recordLabel.getWidth()/2,game.getScreenHeight()-50);
             prevTime = TimeUtils.millis();
+        }
+
+        if(record == destenation*1000)
+        {
+            game.setScreen(map);
+            dispose();
         }
 
         if(roadY+road1.getHeight() < 0)

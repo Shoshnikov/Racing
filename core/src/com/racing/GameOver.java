@@ -62,8 +62,8 @@ public class GameOver implements Screen
         stage.act(delta);
         stage.draw();
 
-        if(retryButton.getClickListener().isPressed())
-           game.setScreen(new mainGameScreen(game, mainMenu.getChoise(),mainMenu));//TODO уменьшить кол-во аргументов
+        //if(retryButton.getClickListener().isPressed())
+           //game.setScreen(new mainGameScreen(game, mainMenu.getChoise(),mainMenu));//TODO уменьшить кол-во аргументов
         if(toMainMenu.getClickListener().isPressed())
             game.setScreen(mainMenu);
     }

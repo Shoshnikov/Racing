@@ -199,7 +199,7 @@ public class MainMenu implements Screen
         stage.draw();
 
         if(playTB.getClickListener().isPressed()) {
-            game.setScreen(new Map(game));
+            game.setScreen(new Map(game,this,choise));
             //game.setScreen(new mainGameScreen(game, choise, this));
             playTB.getClickListener().cancel();
         }
