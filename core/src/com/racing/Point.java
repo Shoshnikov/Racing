@@ -3,8 +3,10 @@ package com.racing;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import java.util.ArrayList;
 
@@ -15,18 +17,30 @@ public class Point
     private ArrayList<Edge> edges = new ArrayList<Edge>();
     private Button button;
     private boolean isActive = false;
+    private boolean isDrawed = false;
+    private float x,y;
+    private Rectangle pointRectangle;
+    private Skin UISkin;
+    private TextureAtlas UIAtlas;
 
     public Point()
     {
-        TextureAtlas UIAtlas = new TextureAtlas(Gdx.files.internal("UIAtlas.atlas"));
-        button = new Button();
+        UIAtlas = new TextureAtlas(Gdx.files.internal("UIAtlas.atlas"));
+        UISkin = new Skin(Gdx.files.internal("UISkin.json"),UIAtlas);
+        button = new Button(UISkin,"radioButton");
+        button.setSize(50f,50f);
+        pointRectangle = new Rectangle(0,0,50f,50f);
         id = ID++;
     }
 
     private void addEdge(Edge edge)
     {
         edges.add(edge);
-        System.out.println("Edge between " + edge.getParent() + " and " + edge.getNeighbour() + " created. Edge weight== " + edge.getWeight());
+    }
+
+    public void deleteEdges()
+    {
+        edges.clear();
     }
 
     public void createEdge(Point neighbour, float weight)
@@ -78,25 +92,47 @@ public class Point
         return id;
     }
 
-    public boolean isActive()
-    {
-        return isActive;
-    }
-
-    public void turnOn()
-    {
-        isActive = true;
-        button.setChecked(isActive);
-    }
-
-    public void turnOff()
-    {
-        isActive = false;
-        button.setChecked(isActive);
-    }
-
     public void setButtonPosition(float x, float y)
     {
+        this.y = y;
+        this.x = x;
         button.setPosition(x,y);
+        pointRectangle.setPosition(x,y);
+    }
+
+    public float getX()
+    {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public Edge getEdgeWith(Point point)
+    {
+        for(Edge e: edges)
+            if(e.getNeighbour().getID() == point.getID())
+                return e;
+            return null;
+    }
+
+
+    public Button getButton()
+    {
+        return button;
+    }
+
+    public void setDrawed(boolean drawed) {
+        isDrawed = drawed;
+    }
+
+    public boolean isDrawed() {
+        return isDrawed;
+    }
+
+    public Rectangle getPointRectangle()
+    {
+        return pointRectangle;
     }
 }

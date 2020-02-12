@@ -32,6 +32,17 @@
 		{
 			"down": leftButtonDown,
 			"up": leftButton
+		},
+		"radioButton":
+		{
+			"down": RadioButtonDown,
+			"up": RadioButtonUp,
+			"checked": RadioButtonDown
+		},
+		"currentPointButton":
+		{
+			"down": CurrentPositionButton,
+			"up": CurrentPositionButton
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle":
