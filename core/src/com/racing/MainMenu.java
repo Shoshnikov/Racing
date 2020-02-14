@@ -36,10 +36,10 @@ public class MainMenu implements Screen
     private Button rightArrow;
     private int choise;
     private boolean leftAnimationOn = false, rightAnimationOn = false;
-    private Label record;
+    //private Label record;
     private FileInputStream fileInputStream;
     private ObjectInputStream objectInputStream;
-    private boolean firstStart = true;
+    //private boolean firstStart = true;
 
 
     public MainMenu(Game game)
@@ -58,7 +58,7 @@ public class MainMenu implements Screen
         leftArrow = new Button(mainMenuSkin,"arrowLeft");
         rightArrow = new Button(mainMenuSkin,"arrowRigth");
         choise = 0;
-        if(Gdx.files.internal("core\\assets\\save.sav").exists() && firstStart)
+        /*if(Gdx.files.internal("core\\assets\\save.sav").exists() && firstStart)
         {
             try
             {
@@ -77,8 +77,8 @@ public class MainMenu implements Screen
         }else
             record = new Label("Record: ",mainMenuSkin,"default");
 
-        record.setPosition(game.getScreenWidth()/1.3f,game.getScreenHeight()/1.2f);
-        firstStart = false;
+        record.setPosition(Controller.getScreenWidth()/1.3f,Controller.getScreenHeight()/1.2f);
+        firstStart = false;*/
     }
 
     private void switchTexture()
@@ -108,7 +108,7 @@ public class MainMenu implements Screen
             {
                 carForChoise.remove();
                 switchTexture();
-                carForChoise.setPosition(game.getScreenWidth()/6f,game.getScreenHeight()/1.8f);
+                carForChoise.setPosition(Controller.getScreenWidth()/6f,Controller.getScreenHeight()/1.8f);
                 rightAnimationOn = false;
             }
     }
@@ -121,7 +121,7 @@ public class MainMenu implements Screen
             {
                 carForChoise.remove();
                 switchTexture();
-                carForChoise.setPosition(game.getScreenWidth()/6f,game.getScreenHeight()/1.8f);
+                carForChoise.setPosition(Controller.getScreenWidth()/6f,Controller.getScreenHeight()/1.8f);
                 leftAnimationOn = false;
             }
     }
@@ -130,10 +130,10 @@ public class MainMenu implements Screen
     public void show()
     {
 
-        if(!firstStart)
-            record.setText("Record: " + game.save.getRecord());
+        /*if(!firstStart)
+            record.setText("Record: " + game.save.getRecord());*/
 
-        playTB.setPosition(game.getScreenWidth() / 2f - playTB.getWidth()/2,game.getScreenHeight()/1.5f);
+        playTB.setPosition(Controller.getScreenWidth() / 2f - playTB.getWidth()/2,Controller.getScreenHeight()/1.5f);
         playTB.addListener(new ClickListener()
         {
             @Override
@@ -143,7 +143,7 @@ public class MainMenu implements Screen
             }
         });
 
-        exitTB.setPosition(game.getScreenWidth()/2f-exitTB.getWidth()/2,game.getScreenHeight()/4f);
+        exitTB.setPosition(Controller.getScreenWidth()/2f-exitTB.getWidth()/2,Controller.getScreenHeight()/4f);
         exitTB.addListener(new ClickListener()
         {
             @Override
@@ -153,7 +153,7 @@ public class MainMenu implements Screen
         });
 
         carForChoise.scaleBy(0.001f,0.001f);
-        carForChoise.setPosition(game.getScreenWidth()/6f,game.getScreenHeight()/1.8f);
+        carForChoise.setPosition(Controller.getScreenWidth()/6f,Controller.getScreenHeight()/1.8f);
 
         rightArrow.setPosition(carForChoise.getX()+carForChoise.getPrefWidth(),carForChoise.getY() + 100f);
         rightArrow.addListener(new ClickListener()
@@ -178,7 +178,7 @@ public class MainMenu implements Screen
         stage.addActor(carForChoise);
         stage.addActor(rightArrow);
         stage.addActor(leftArrow);
-        stage.addActor(record);
+        //stage.addActor(record);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -191,7 +191,7 @@ public class MainMenu implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(background,0,0,game.getScreenWidth(),game.getScreenHeight());
+        batch.draw(background,0,0,Controller.getScreenWidth(),Controller.getScreenHeight());
         carForChoise.draw(batch,1f);
         batch.end();
 
@@ -199,28 +199,32 @@ public class MainMenu implements Screen
         stage.draw();
 
         if(playTB.getClickListener().isPressed()) {
-            game.setScreen(new Map(game,this,choise));
-            //game.setScreen(new mainGameScreen(game, choise, this));
+            game.setScreen(new Map(game));
+            Controller c = new Controller();
+            c.setChosenCarIndex(choise);
             playTB.getClickListener().cancel();
         }
+
         if(exitTB.getClickListener().isPressed())
             Gdx.app.exit();
+
         if(rightArrow.getClickListener().isPressed())
-        {
-            if (choise > 0 && !rightAnimationOn)
-            {
-                choise--;
-                System.out.println("rightAnimationOn started\nchoise " + choise);
-                rightAnimationOn = true;
-            }
-        }
-        if(leftArrow.getClickListener().isPressed())
-            if(choise < 3 && !leftAnimationOn)
+            if(choise < 3 && !rightAnimationOn)
             {
                 choise++;
                 System.out.println("leftAnimationOn started\nchoise " + choise);
+                rightAnimationOn = true;
+            }
+
+        if(leftArrow.getClickListener().isPressed())
+            if (choise > 0 && !leftAnimationOn)
+            {
+                choise--;
+                System.out.println("rightAnimationOn started\nchoise " + choise);
                 leftAnimationOn = true;
             }
+
+
         if(leftAnimationOn)
             leftAnimation();
         if(rightAnimationOn)
@@ -251,10 +255,5 @@ public class MainMenu implements Screen
     @Override
     public void dispose() {
         System.out.println("Menu dispose");
-    }
-
-    public int getChoise()
-    {
-        return choise;
     }
 }

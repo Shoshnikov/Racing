@@ -17,6 +17,9 @@ public class Game extends com.badlogic.gdx.Game
 	{
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
+		Controller c = new Controller();
+		c.setScreenHeight(screenHeight);
+		c.setScreenWidth(screenWidth);
 	}
 
 	public int getScreenWidth()

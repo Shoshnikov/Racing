@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-
 import java.util.ArrayList;
+
 
 
 public class Map implements Screen
@@ -24,23 +24,38 @@ public class Map implements Screen
     private Game game;
     private Graf graf;
     private Stage stage;
-    private int currentPointID = 0;
+    private int currentPointID;
     private int destenationPointID = -1;
     private TextButton rideButton;
     private TextureAtlas UIAtlas;
     private Skin UISkin;
-    private ArrayList<Point> knownPoints = new ArrayList<Point>();
-    private ArrayList<Edge> knownEdges = new ArrayList<Edge>();
+    private ArrayList<Point> knownPoints;
+    private ArrayList<Edge> knownEdges;
     private Label destenation;
-    private MainMenu mainMenu;
-    private int chosenCarIndex;
     private int dest;
 
-    public Map(Game game,MainMenu mainMenu, int chosenCarIndex)
+    public Map(Game game)
     {
-        this.mainMenu = mainMenu;
-        this.chosenCarIndex = chosenCarIndex;
         this.game = game;
+        knownPoints = new ArrayList<Point>();
+        knownEdges = new ArrayList<Edge>();
+        graf = new Graf(8,2,400f,800f);
+        currentPointID = 0;
+    }
+
+    public Map(Game game, ArrayList<Point> knownPoints, ArrayList<Edge> knownEdges, Graf graf,int currentPointID)
+    {
+        this.game = game;
+        this.knownEdges = knownEdges;
+        this.knownPoints = knownPoints;
+        this.graf = graf;
+        this.currentPointID = currentPointID;
+        this.stage = Controller.getMapStage();
+    }
+
+    @Override
+    public void show()
+    {
         Texture map = new Texture(Gdx.files.internal("Wasteland0.jpg"));
         mapSprite = new Sprite(map);
         mapSprite.setSize(game.getScreenWidth(),game.getScreenHeight());
@@ -48,24 +63,16 @@ public class Map implements Screen
         stage = new Stage();
         UIAtlas = new TextureAtlas(Gdx.files.internal("UIAtlas.atlas"));
         UISkin = new Skin(Gdx.files.internal("UISkin.json"),UIAtlas);
-        rideButton = new TextButton("Ride",UISkin);
+        rideButton = new TextButton("Drive",UISkin);
         rideButton.setSize(200f,75f);
         rideButton.setPosition(game.getScreenWidth()-250f,75f);
-        destenation = new Label("Destenation :",UISkin,"blackLabel");
+        destenation = new Label("Destination :",UISkin,"blackLabel");
         destenation.setSize(200,75);
         destenation.setPosition(250,70);
         stage.addActor(rideButton);
         stage.addActor(destenation);
         System.out.println("Map created");
-        graf = new Graf(8,2,400f,800f,game);
-    }
-
-    @Override
-    public void show() {
-        //graf = new Graf(8,2,400f,800f,game);
-        //for(Point p:graf.getPoints())
-            //stage.addActor(p.getButton());
-        addNewPoints(graf.getPointAt(0));
+        addNewPoints(graf.getPointAt(currentPointID));
         Gdx.input.setInputProcessor(stage);
         System.out.println("Map show");
     }
@@ -85,19 +92,20 @@ public class Map implements Screen
             if(p.getButton().isPressed() && destenationPointID == -1)
             {
                 destenationPointID = p.getID();
-                destenation.setText("Destenation : " +  Math.round(graf.getPointAt(currentPointID).getEdgeWith(p).getWeight()/200f) + " km");
+                destenation.setText("Destination : " +  Math.round(graf.getPointAt(currentPointID).getEdgeWith(p).getWeight()/200f) + " km");
                 dest = Math.round(graf.getPointAt(currentPointID).getEdgeWith(p).getWeight()/200f);
-                System.out.println("destenationPointID chenged " + destenationPointID);
+                System.out.println("destinationPointID chenged " + destenationPointID);
             }
             else if(p.getButton().isPressed() && destenationPointID != -1)
             {
                 try
                 {
-                    destenation.setText("Destenation : " + Math.round(graf.getPointAt(currentPointID).getEdgeWith(p).getWeight()/200f) + " km");
+                    destenation.setText("Destination : " + Math.round(graf.getPointAt(currentPointID).getEdgeWith(p).getWeight()/200f) + " km");
                     dest = Math.round(graf.getPointAt(currentPointID).getEdgeWith(p).getWeight()/200f);
+                    System.out.println("destinationPointID chenged " + destenationPointID);
                 }catch(Exception e)
                 {
-                    destenation.setText("Destenation : Unkown");
+                    destenation.setText("Destination : Unkown");
                 }
                 graf.getPointAt(destenationPointID).getButton().setChecked(false);
                 destenationPointID = p.getID();
@@ -106,12 +114,17 @@ public class Map implements Screen
             if(rideButton.isPressed())
             {
                 graf.getPointAt(currentPointID).getButton().setChecked(false);
-                System.out.println("Ride");
+                System.out.println("Drive");
                 currentPointID = destenationPointID;
                 addNewPoints(graf.getPointAt(currentPointID));
-                game.setScreen(new mainGameScreen(game,chosenCarIndex,mainMenu,dest,this));
-                for(Point p: graf.getPoints())
-                    p.getButton().getClickListener().cancel();
+                Controller c = new Controller();
+                c.setGraf(graf);
+                c.setKnownEdges(knownEdges);
+                c.setKnownPoints(knownPoints);
+                c.setDestination(dest);
+                c.setCurrentPointID(currentPointID);
+                c.setMapStage(stage);
+                game.setScreen(new mainGameScreen(game,this));
             }
     }
 
@@ -150,6 +163,16 @@ public class Map implements Screen
             knownPoints.add(p);
             knownEdges.add(newCurrentPoint.getEdgeWith(p));
         }
+        rebuildStage();
+    }
+
+    private void rebuildStage()
+    {
+        stage.clear();
+        stage.addActor(rideButton);
+        stage.addActor(destenation);
+        for(Point p: knownPoints)
+            stage.addActor(p.getButton());
     }
 
     private void drawKnownEdges()

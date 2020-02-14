@@ -23,13 +23,11 @@ public class GameOver implements Screen
     private TextureAtlas textureAtlas;
     private Skin skin;
     private Game game;
-    private MainMenu mainMenu;
     private SpriteBatch batch;
 
-    public GameOver(Game game, MainMenu mainMenu)
+    public GameOver(Game game)
     {
         this.game = game;
-        this.mainMenu = mainMenu;
         textureAtlas = new TextureAtlas(Gdx.files.internal("UIAtlas.atlas"));
         skin = new Skin(Gdx.files.internal("UISkin.json"), textureAtlas);
         stage = new Stage();
@@ -65,7 +63,7 @@ public class GameOver implements Screen
         //if(retryButton.getClickListener().isPressed())
            //game.setScreen(new mainGameScreen(game, mainMenu.getChoise(),mainMenu));//TODO уменьшить кол-во аргументов
         if(toMainMenu.getClickListener().isPressed())
-            game.setScreen(mainMenu);
+            game.setScreen(new MainMenu(game));
     }
 
     @Override

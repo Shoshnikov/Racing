@@ -22,6 +22,7 @@ public class Point
     private Rectangle pointRectangle;
     private Skin UISkin;
     private TextureAtlas UIAtlas;
+    public String type;
 
     public Point()
     {
@@ -31,6 +32,7 @@ public class Point
         button.setSize(50f,50f);
         pointRectangle = new Rectangle(0,0,50f,50f);
         id = ID++;
+        type = "Ordinary point";
     }
 
     private void addEdge(Edge edge)

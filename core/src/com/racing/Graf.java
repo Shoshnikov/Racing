@@ -15,24 +15,24 @@ public class Graf
     private int arr[][];
     private float minWeight, maxWeight;
     private ArrayList<Point> points = new ArrayList<Point>();
-    private Game game;
 
-    public Graf(int pointsCount, int maxEdges, float minWeight, float maxWeight,Game game)
+
+
+    public Graf(int pointsCount, int maxEdges, float minWeight, float maxWeight)
     {
         this.pointsCount = pointsCount;
         this.maxEdges = maxEdges;
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
-        this.game = game;
         arr = new int[pointsCount][pointsCount];
         createPoints();
         createEdges();
         createMatrix();
         printMatrix();
-        //points.get(0).setButtonPosition(game.getScreenWidth()/2f,game.getScreenHeight()/2f);
         System.out.println("Graf created");
+        points.get(0).type = "Start";
         setPointsPositions();
-        //drawEdges();
+        makeEndPoint();
     }
 
     private void createPoints()
@@ -151,7 +151,7 @@ public class Graf
     {
         System.out.println("Drawing first point");
         points.get(0).getButton().setChecked(true);
-        points.get(0).setButtonPosition(game.getScreenWidth()/2f,game.getScreenHeight()/2f);
+        points.get(0).setButtonPosition(Controller.getScreenWidth()/2f,Controller.getScreenHeight()/2f);
         points.get(0).setDrawed(true);
         System.out.println("Start drawing points");
         float x = 0,y = 0;
@@ -234,7 +234,7 @@ public class Graf
                                 break;
                         }
                         System.out.println("Before if statement ");
-                        if (points.get(i).getX() + x > 75f && points.get(i).getX() + x < game.getScreenWidth() - 75f && points.get(i).getY() + y > 150f && points.get(i).getY() + y < game.getScreenHeight() - 75f)
+                        if (points.get(i).getX() + x > 75f && points.get(i).getX() + x < Controller.getScreenWidth() - 75f && points.get(i).getY() + y > 150f && points.get(i).getY() + y < Controller.getScreenHeight() - 75f)
                         {
                             System.out.println("if statement");
                             neighbour.setButtonPosition(points.get(i).getX() + x, points.get(i).getY() + y);
@@ -281,7 +281,17 @@ public class Graf
                 sr.end();
             }
         }
-        //System.out.println("Edges drawed");
+    }
+
+    private void makeEndPoint()
+    {
+        for(Point p: points)
+            if(p.getEdgeWith(points.get(0)) == null && p.getID() != 0)
+            {
+                p.type = "Finish";
+                System.out.println("Finish is "+ p.getID());
+                break;
+            }
     }
 
 }

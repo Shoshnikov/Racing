@@ -32,36 +32,32 @@ public class mainGameScreen implements Screen
     private long lastSpawnTime = 0;
     private long spawnDelay = 2000;
     private long record = 0l;
-    private TextButton toMainMenu;
+    //private TextButton toMainMenu;
     private Label recordLabel;
     private Skin mainGameScreenSkin;
     private TextureAtlas UIAtlas;
     private Stage stage;
     private long prevTime = 0l;
-    private MainMenu mainMenu;
     private Label hpLabel;
-    private int destenation;
     private Map map;
 
-    public mainGameScreen(Game game, int chosenCarIndex, MainMenu mainMenu, int destenation, Map map)
+    public mainGameScreen(Game game, Map map)
     {
         this.game = game;
-        this.destenation = destenation;
         road0 = new Texture(Gdx.files.internal("road.png"));
         road1 = road0;
-        car = new Car(game.getScreenWidth()/2f, chosenCarIndex);
+        car = new Car(game.getScreenWidth()/2f, Controller.getChosenCarIndex());
         batch = new SpriteBatch();
         roadY = 0;
         UIAtlas = new TextureAtlas(Gdx.files.internal("UIAtlas.atlas"));
         mainGameScreenSkin = new Skin(Gdx.files.internal("UISkin.json"),UIAtlas);
-        toMainMenu = new TextButton("Main Menu", mainGameScreenSkin,"default");
-        toMainMenu.setPosition(game.getScreenWidth()/1.3f,game.getScreenHeight()/1.2f);
+        //toMainMenu = new TextButton("Main Menu", mainGameScreenSkin,"default");
+        //toMainMenu.setPosition(game.getScreenWidth()/1.3f,game.getScreenHeight()/1.2f);
         recordLabel = new Label("",mainGameScreenSkin,"default");
         recordLabel.setPosition(game.getScreenWidth()/2f-recordLabel.getWidth() - 12,game.getScreenHeight()-50);
         hpLabel = new Label("HP: " + car.getHp(), mainGameScreenSkin,"default");
         hpLabel.setPosition(game.getScreenWidth()/8f-recordLabel.getWidth() - 12,game.getScreenHeight()-50);
         stage = new Stage();
-        this.mainMenu = mainMenu;
     }
 
     private void removeBarriers()
@@ -86,7 +82,7 @@ public class mainGameScreen implements Screen
     {
         stage.addActor(hpLabel);
         stage.addActor(recordLabel);
-        stage.addActor(toMainMenu);
+        //stage.addActor(toMainMenu);
         Gdx.input.setInputProcessor(stage);
         System.out.println("mainGameScreen shown");
     }
@@ -122,9 +118,9 @@ public class mainGameScreen implements Screen
             prevTime = TimeUtils.millis();
         }
 
-        if(record == destenation*1000)
+        if(record == Controller.getDestination()*1000)
         {
-            game.setScreen(map);
+            game.setScreen(new Map(game, Controller.getKnownPoints(),Controller.getKnownEdges(),Controller.getGraf(),Controller.getCurrentPointID()));
             dispose();
         }
 
@@ -135,14 +131,13 @@ public class mainGameScreen implements Screen
 
         removeBarriers();
 
-        if(toMainMenu.getClickListener().isPressed())
+        /*if(toMainMenu.getClickListener().isPressed())
         {
-            //game.setScreen(new MainMenu(game));
-            game.setScreen(mainMenu);
-        }
+            game.setScreen(new MainMenu(game));
+        }*/
 
         if(car.getHp() <= 0)
-            game.setScreen(new GameOver(game,mainMenu));
+            game.setScreen(new GameOver(game));
 
         batch.begin();
         batch.draw(road0,0,roadY, game.getScreenWidth(),game.getScreenHeight());
