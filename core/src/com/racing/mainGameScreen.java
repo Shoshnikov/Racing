@@ -5,16 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.TimeUtils;
-
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -25,8 +23,9 @@ public class mainGameScreen implements Screen
     private Game game;
     private Car car;
     private SpriteBatch batch;
-    private Texture road0;
-    private Texture road1;
+    private Texture roadTexture;
+    private Sprite road0;
+    private Sprite road1;
     private float roadY;
     private ArrayList<Barrier> barriers = new ArrayList<>();
     private long lastSpawnTime = 0;
@@ -44,15 +43,15 @@ public class mainGameScreen implements Screen
     public mainGameScreen(Game game, Map map)
     {
         this.game = game;
-        road0 = new Texture(Gdx.files.internal("road.png"));
+        roadTexture = new Texture(Gdx.files.internal("road.png"));
+        road0 = new Sprite(roadTexture);
+        road0.setSize(Controller.getScreenWidth(),Controller.getScreenHeight());
         road1 = road0;
         car = new Car(game.getScreenWidth()/2f, Controller.getChosenCarIndex());
         batch = new SpriteBatch();
         roadY = 0;
         UIAtlas = new TextureAtlas(Gdx.files.internal("UIAtlas.atlas"));
         mainGameScreenSkin = new Skin(Gdx.files.internal("UISkin.json"),UIAtlas);
-        //toMainMenu = new TextButton("Main Menu", mainGameScreenSkin,"default");
-        //toMainMenu.setPosition(game.getScreenWidth()/1.3f,game.getScreenHeight()/1.2f);
         recordLabel = new Label("",mainGameScreenSkin,"default");
         recordLabel.setPosition(game.getScreenWidth()/2f-recordLabel.getWidth() - 12,game.getScreenHeight()-50);
         hpLabel = new Label("HP: " + car.getHp(), mainGameScreenSkin,"default");
