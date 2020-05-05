@@ -127,7 +127,6 @@ public class mainGameScreen implements Screen
             roadY = 0;
         else
             roadY -= Barrier.speed;
-
         removeBarriers();
 
         /*if(toMainMenu.getClickListener().isPressed())

@@ -14,6 +14,8 @@ public class Car
     private float x;
     private Rectangle carRectangle;
     private int hp;
+    private float width = 250;
+    private float height = 280;
 
     private void randomSprite()
     {
@@ -69,6 +71,7 @@ public class Car
                 hp = 150;
                 break;
         }
+        carSprite.setSize(width,height);
     }
 
     public Car(float x)
@@ -76,7 +79,7 @@ public class Car
         this.x = x;
         carAtlas = new TextureAtlas(Gdx.files.internal("carAtlas.atlas"));
         randomSprite();
-        carRectangle = new Rectangle(x+ 30,30,carSprite.getWidth()-30,carSprite.getHeight()-30);
+        carRectangle = new Rectangle(x + 30,30,carSprite.getWidth()-50,carSprite.getHeight()-50);
         this.x -= carSprite.getWidth()/2;
         setPosition();
     }
@@ -86,9 +89,10 @@ public class Car
         this.x = x;
         carAtlas = new TextureAtlas(Gdx.files.internal("carAtlas.atlas"));
         choisenCar(carNumber);
-        carRectangle = new Rectangle(x+ 30,30,carSprite.getWidth()-30,carSprite.getHeight()-30);
+        carRectangle = new Rectangle(x + 30,30,width-50,height-50);
         this.x -= carSprite.getWidth()/2;
         setPosition();
+        System.out.println("Width " + carRectangle.getWidth() + " Height " + carRectangle.getHeight());
     }
 
     public void moveLeft()
